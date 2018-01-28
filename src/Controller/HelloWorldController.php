@@ -1,16 +1,20 @@
 <?php
+
 namespace App\Controller;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class HelloWorldController extends Controller
 {
 
-    public function hello()
+    /**
+     * @Route("/hello/{name}", name="app_hello")
+     */
+    public function hello($name="World")
     {
-        $name = "World";
 
         return new Response(
             "<html><body>Hello " . $name . "</body></html>"

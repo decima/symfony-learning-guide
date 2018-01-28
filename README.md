@@ -107,3 +107,45 @@ Now go to [http://localhost:8000/hello/world](http://localhost:8000/hello/world)
 you will see: 
 ![Hello World](./tutorial/step_102/hello_world_result.png "hello world screenshot")
 
+### Step 103 - Routing
+
+For this step, we will not explain how to manage routing with yaml notations.
+
+First, you will need annotations package.
+```bash
+$ composer require annotations
+```
+
+Now, in routes.yaml, you can remove your config and add in your controller class some annotations :
+```php
+<?php
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route; //add this line to add usage of Route class.
+
+class HelloWorldController extends Controller
+{
+
+    /**
+     * @Route("/hello/{name}", name="app_hello") //add this comment to annotations
+     */
+    public function hello($name="World")
+    {
+
+        return new Response(
+            "<html><body>Hello " . $name . "</body></html>"
+        );
+    }
+
+}
+
+```
+
+When you go back to [http://localhost:8000/hello/world](http://localhost:8000/hello/world) nothing has changed,
+so the changes work.
+
+And more, if you go to [http://localhost:8000/hello/john](http://localhost:8000/hello/john) you will see:
+![Hello John](./tutorial/step_103/hello_john_result.png "hello john screenshot")
+
