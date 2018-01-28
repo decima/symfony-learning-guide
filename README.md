@@ -55,7 +55,7 @@ $ composer require server --dev
 Now go to [http://localhost:8000](http://localhost:8000), if everything is cool you should see : 
 
 
-![Welcome to Symfony](./tutorial/step_101 "Screenshot")
+![Welcome to Symfony](./tutorial/step_101/welcome.png "Screenshot")
 
  
 
