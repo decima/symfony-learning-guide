@@ -147,5 +147,6 @@ When you go back to [http://localhost:8000/hello/world](http://localhost:8000/he
 so the changes work.
 
 And more, if you go to [http://localhost:8000/hello/john](http://localhost:8000/hello/john) you will see:
+
 ![Hello John](./tutorial/step_103/hello_john_result.png "hello john screenshot")
 
