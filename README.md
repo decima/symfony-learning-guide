@@ -104,5 +104,6 @@ app_hello_world:
 ```
 
 Now go to [http://localhost:8000/hello/world](http://localhost:8000/hello/world) and if everything is good,
-you will see: ![Hello World](./tutorial/step_102/hello_world_result.png hello world screenshot)
+you will see: 
+![Hello World](./tutorial/step_102/hello_world_result.png hello world screenshot)
 
