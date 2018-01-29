@@ -52,6 +52,12 @@ otherwise install the dev server
 ```bash
 $ composer require server --dev
 ```
+and then start the server using
+
+```bash
+$ bin/console server:run
+```
+
 
 Now go to [http://localhost:8000](http://localhost:8000), if everything is cool you should see: 
 
