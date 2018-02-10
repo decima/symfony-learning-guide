@@ -157,7 +157,7 @@ And more, if you go to [http://localhost:8000/hello/john](http://localhost:8000/
 ![Hello John](./tutorial/step_103/hello_john_result.png "hello john screenshot")
 
 -------------------------------------------------------------------
-### Step 103.5 - Other controller
+#### Step 103.5 - Other controller
 **Before next step, You have to create another controller**
 
 The name of the controller should be MainController and implement a method named homeAction pointing on route / 
