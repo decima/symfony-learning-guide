@@ -113,7 +113,7 @@ Now go to [http://localhost:8000/hello/world](http://localhost:8000/hello/world)
 you will see: 
 ![Hello World](./tutorial/step_102/hello_world_result.png "hello world screenshot")
 
-### Step 103 - Routing
+#### Step 103 - Routing
 
 For this step, we will not explain how to manage routing with yaml notations.
 
@@ -172,7 +172,7 @@ This is the content to return.
 </html>
 ```
 
-### Step 104 - Twig - Templating
+#### Step 104 - Twig - Templating
 > A template is simply a text file that can generate any text-based format (HTML, XML, CSV, LaTeX ...).
 >
 >The most familiar type of template is a PHP template - a text file parsed by PHP that contains a mix of text
@@ -312,6 +312,6 @@ With the help of extend you have extended the base template and replaced the bod
 More details on what you can do with twig can be find on [the documentation](https://twig.symfony.com/doc/2.x/)
 
 
-### Step 104.5 - Other template
+#### Step 104.5 - Other template
 Now your turn. First add a menu to switch between pages using the twig "path function" and then add a template for 
 helloAction in HelloWorldController.
