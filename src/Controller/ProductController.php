@@ -37,8 +37,13 @@ class ProductController extends Controller
             ])
             ->add("save", SubmitType::class, ["label" => "create Product"])
             ->getForm();
+        $result = [];
+        $form->handleRequest($request);
+        if ($form->isValid() && $form->isSubmitted()) {
+            $result = $form->getData();
+        }
 
-        return ["form" => $form->createView()];
+        return ["form" => $form->createView(), "result" => $result];
 
     }
 }

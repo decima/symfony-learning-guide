@@ -410,3 +410,39 @@ twig:
 For the next step we will use the global twig configuration and add bootstrap_4_layout.
 Don't forget to add bootstrap 4 in your project.
 your form should now have changed and be bootstrap style.
+
+#### Step 201.5 - The varDumper Component
+
+For the next steps, we will add debug tools for symfony: 
+```bash
+composer require debug
+
+```
+
+This bundle offers a set of useful functions:
+
+- the `dump` function, an alternative to `var_dump` and `print_r`. With its twig function. 
+- The debug toolbar.
+
+#### Step 202 - Handle data
+
+Now we will handle the form post.
+first change the add method to handle the request.
+
+```php
+$result = [];
+$form->handleRequest($request);
+if ($form->isValid() && $form->isSubmitted()) {
+    $result = $form->getData();
+}
+return ["form" => $form->createView(), "result" => $result];
+```
+
+In this first version, we will just show the result of the form in twig. In your add.html.twig add `{{ dump(result) }}`.
+
+Now try to post again your form and you will see the dump output.
+
+We will save the data later. 
+
+
+
