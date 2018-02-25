@@ -315,3 +315,96 @@ More details on what you can do with twig can be find on [the documentation](htt
 #### Step 104.5 - Other template
 Now your turn. First add a menu to switch between pages using the twig "path function" and then add a template for 
 helloAction in HelloWorldController.
+
+
+#### Step 105 - Forms
+First install the Symfony Flex formula 
+```
+composer require form
+```
+
+Now let's begin by creating a new Controller named ProductController.
+You can add a route annotation on a controller and this route will prefix the whole controller.
+For this, simple add on the top of your class.
+```
+/**
+ * @Route("/product")
+ */
+```
+And then in your ProductController, create a route named add, on path `/product/add`,
+name it `product.add` and make it render a template `product/add.html.twig` witch
+extends `base.html.twig`. The add method should have a Request parameter. 
+
+In your add Method add:
+```php
+$form = $this->createFormBuilder()
+    ->add("name", TextType::class)
+    ->add("releaseOn", DateType::class, [
+        "widget" => "single_text"
+    ])
+    ->add("save", SubmitType::class, ["label" => "create Product"])
+    ->getForm();
+    
+return ["form" => $form->createView()];
+```
+
+
+Now in your twig add the following lines in you body block
+```twig
+{% extends "base.html.twig" %}
+{% block body %}
+    {{ form(form) }}
+{% endblock %}
+```
+
+You can check now on [localhost:8000/product/add](http://localhost:8000/product/add).
+
+We will customize the form now.  You can generate form line by line using 
+```twig
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.releaseOn) }}
+    {{ form_end(form) }}
+```
+the form_end will generate the missing fields. You can either generate more specific:
+```twig
+    <div>
+    {{ form_label(form.name) }}
+    {{ form_errors(form.name) }}
+    {{ form_widget(form.name) }}
+    </div>
+```
+
+this will generate 
+```html
+    <div>
+        <label for="form_name">Name</label>
+        <ul>
+            <li>This field is required</li>
+        </ul>
+        <input type="text" id="form_name" name="form[name]" />
+    </div>
+```
+
+You can also add theme to your form. You can create it yourself or use predefined themes:
+- form_div_layout.html.twig 
+- form_table_layout.html.twig
+- bootstrap_3_layout.html.twig
+- bootstrap_3_horizontal_layout.html.twig
+- bootstrap_4_layout.html.twig
+- bootstrap_4_horizontal_layout.html.twig
+- foundation_5_layout.html.twig
+
+You can select your theme directly inside your twig file : 
+```twig
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+```
+Or add it to the global twig configuration.
+```yaml
+#config/twig.yaml
+twig:
+    form_themes: ['bootstrap_4_layout.html.twig']
+```
+For the next step we will use the global twig configuration and add bootstrap_4_layout.
+Don't forget to add bootstrap 4 in your project.
+your form should now have changed and be bootstrap style?

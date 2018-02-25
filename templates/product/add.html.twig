@@ -1,0 +1,8 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.releaseOn) }}
+    {{ form_row(form.save) }}
+    {{ form_end(form) }}
+{% endblock %}

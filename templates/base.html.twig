@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     {% block stylesheets %}{% endblock %}
 </head>
-    <body>
-    {% block body %}{% endblock %}
-    <footer>
-        <hr/>
-        &copy; Decima
-    </footer>
-    {% block javascripts %}{% endblock %}
-    </body>
+<body>
+{% block body %}{% endblock %}
+<footer>
+    <hr/>
+    &copy; Decima
+</footer>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+{% block javascripts %}{% endblock %}
+</body>
 </html>
