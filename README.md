@@ -407,4 +407,4 @@ twig:
 ```
 For the next step we will use the global twig configuration and add bootstrap_4_layout.
 Don't forget to add bootstrap 4 in your project.
-your form should now have changed and be bootstrap style?
+your form should now have changed and be bootstrap style.
