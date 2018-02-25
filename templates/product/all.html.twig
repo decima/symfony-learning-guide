@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <a href="{{ url("product.add") }}">Add</a>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Release On</th>
+            <th>Action</th>
+        </tr>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.releaseOn|date }}</td>
+                <td>
+                    <a onclick="return confirm('are you sure?');" href="{{ url("product.delete", {"product":product.id}) }}">Delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No content available</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

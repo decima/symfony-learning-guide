@@ -448,12 +448,10 @@ We will save the data later.
 
 #### Step 203 - Doctrine - Configuration
 
-Doctrine Project is a set of PHP libraries primarily focused on providing persistence services and related 
-functionality. The two main projects are the Object Relationship Mapper (ORM) and the Database Abstraction Layer (DBAL).
+Doctrine Project is a set of PHP libraries primarily focused on providing persistence services and related functionality. The two main projects are the Object Relationship Mapper (ORM) and the Database Abstraction Layer (DBAL).
 
 
-Symfony was shipped with Doctrine until version 3.4. But Since version 4, it is shipped separately, but can be
-added simply using flex formula.
+Symfony was shipped with Doctrine until version 3.4. But Since version 4, it is shipped separately, but can be added simply using flex formula.
 
 First, install Doctrine, as well as the MakerBundle, which will help generate some code:
 
@@ -474,12 +472,138 @@ Now you can create your database it the database doesn't exists using
 php bin/console doctrine:database:create
 ```
 
+#### Step 204 - Doctrine - Entity
+
+Doctrine works with entities. An Entity is an object linked to a database row.
+
+First we will create an Entity linked to Product. 
+```bash
+ php bin/console make:entity Product
+```
+A new file has been create in `src/Entity/Product.php`.
+```php
+<?php
+
+namespace App\Entity;
+ 
+use Doctrine\ORM\Mapping as ORM;
+ 
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ */
+class Product
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+ 
+    // add your own fields
+}
+ 
+```
+
+Now we will add the fields from our previously created form.
+```php
+/**
+ * @ORM\Column(type="text", length=255)
+ */
+private $name;
+
+/**
+ * @ORM\Column(type="datetime")
+ */
+private $releaseOn;
+
+```
+
+Add also the getters and the setters for the two new fields and a getter for the id field.
+Now Doctrine is ready to handle your database but the database itself is not created. execute the following line : 
+```bash
+ php bin/console doctrine:migrations:diff
+```
+it will create a new migrations file in `src/Migrations`.
+Then to run the migration use
+```bash
+ php bin/console doctrine:migrations:migrate
+```
+
+Now in your ProductController you will create a set of routes: 
+
+ - /product/all => function all() with a all.html.twig
+ - /product/show/{product} => function show(Product $product) with a show.html.twig
+ - /product/update/{product} => function update(Product $product) with a update.html.twig
+ - /product/delete/{product} => function delete(Product $product)
 
 
+in your all method add the following code:
+```php
+        $em = $this->getDoctrine()->getManager();
+        $products = $em->getRepository(Product::class)->findAll();
+        return ["products" => $products];
 
+```
+and point to the following twig
+```php
+{% extends "base.html.twig" %}
+{% block body %}
+    <a href="{{ url("product.add") }}">Add</a>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Release On</th>
+            <th>Action</th>
+        </tr>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.releaseOn|date }}</td>
+                <td>
+                    <a onclick="return confirm('are you sure?');" href="{{ url("product.delete", {"product":product.id}) }}">Delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No content available</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+```
 
+In your delete method add the following code:
+```php
+$em = $this->getDoctrine()->getManager();
+$em->remove($product);
+$em->flush();
+return $this->redirectToRoute("product.all");
+```
 
+And update your add method the following:
+```php
+$product = new Product();
+$form = $this->createFormBuilder($product)
+    ->add("name", TextType::class)
+    ->add("releaseOn", DateType::class, [
+        "widget" => "single_text"
+    ])
+    ->add("save", SubmitType::class, ["label" => "create Product"])
+    ->getForm();
+$form->handleRequest($request);
+if ($form->isSubmitted() && $form->isValid()) {
+    $em = $this->getDoctrine()->getManager();
 
+    $em->persist($product);
+    $em->flush();
+    return $this->redirectToRoute("product.all");
 
+}
 
+return ["form" => $form->createView()];
+```
+Then go to /product/all and have a look at the result.
+
+You have now to implement the code for the show and update methods. 
 
