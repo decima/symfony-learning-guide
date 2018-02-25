@@ -446,3 +446,40 @@ We will save the data later.
 
 
 
+#### Step 203 - Doctrine - Configuration
+
+Doctrine Project is a set of PHP libraries primarily focused on providing persistence services and related 
+functionality. The two main projects are the Object Relationship Mapper (ORM) and the Database Abstraction Layer (DBAL).
+
+
+Symfony was shipped with Doctrine until version 3.4. But Since version 4, it is shipped separately, but can be
+added simply using flex formula.
+
+First, install Doctrine, as well as the MakerBundle, which will help generate some code:
+
+```bash
+composer require doctrine maker
+```
+
+Now in your .env file you can see a line.
+```
+# to use mysql: 
+DATABASE_URL="mysql://db_user:db_password@127.0.0.1:3306/db_name"
+
+# to use sqlite:
+DATABASE_URL="sqlite:///%kernel.project_dir%/var/app.db"
+```
+Now you can create your database it the database doesn't exists using
+```bash
+php bin/console doctrine:database:create
+```
+
+
+
+
+
+
+
+
+
+
