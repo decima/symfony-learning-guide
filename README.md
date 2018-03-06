@@ -607,3 +607,16 @@ Then go to /product/all and have a look at the result.
 
 You have now to implement the code for the show and update methods. 
 
+### Part 3 - Security
+In the new part, we will handle security.
+
+Security is composed of 4 parts.
+
+ - providers      : Users definition
+ - encoders       : How to encode users and passwords
+ - firewalls      : Bases access and authentications
+ - access_control : limit access to certain roles and pages
+
+In the next steps you will set up each steps one by one.
+
+
