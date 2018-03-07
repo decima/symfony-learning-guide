@@ -660,6 +660,32 @@ security:
 
 The encoder specify how the user class is encrypted.
 
+#### Step 302 - Providers
+
+Providers specify how the user is connected.
+
+Your UserRepository should implements `Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface`. your loadUserByUsername should contains 
+
+```php
+public function loadUserByUsername($username){
+    return $this->createQueryBuilder('u')
+        ->where('u.username = :username OR u.email = :email')
+        ->setParameter('username', $username)
+        ->setParameter('email', $username)
+        ->getQuery()
+        ->getOneOrNullResult();
+}
+```
+In your security configuration, edit the file and add :
+```yaml
+security:
+    # ...
+
+    providers:
+        my_db_provider:
+            entity:
+                class: App\Entity\User
+```
 
 
 
