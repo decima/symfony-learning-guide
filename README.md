@@ -619,4 +619,60 @@ Security is composed of 4 parts.
 
 In the next steps you will set up each steps one by one.
 
+First thing to do is to add the `security` composer package.
+
+#### Step 301 - Providers
+
+First, we will create a User entity linked to a table 
+```sql
+    users(
+        id:       integer, 
+        username: string(255), 
+        email:    string(255),
+        password: string(255),
+        roles:    json_array
+    )
+```
+Your entity should implements `Symfony\Component\Security\Core\User\UserInterface` interface. Implement now the getters/setters for each fields and the requested fields by the interface. In the getSalt() method, just return `null`. Leave the eraseCredentials method empty for now. Add two more methods :
+```php
+    public function addRole($role) {
+        $this->roles[] = $role;
+    }
+    
+    public function removeRole($role) {
+        $index = array_search($role, $this->roles, true);
+        if ($index !== false) {
+            array_splice($this->roles, $index, 1);
+        }
+    }
+```
+
+This is the definition of your user. create a migration and execute it. 
+
+Then edit your security.yaml adding :
+```yaml
+security:
+    # ...
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+```
+
+This section adds the classes to use as user and its encryption method.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
