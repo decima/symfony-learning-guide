@@ -621,7 +621,7 @@ In the next steps you will set up each steps one by one.
 
 First thing to do is to add the `security` composer package.
 
-#### Step 301 - Providers
+#### Step 301 - Encoders
 
 First, we will create a User entity linked to a table 
 ```sql
@@ -658,8 +658,7 @@ security:
             algorithm: bcrypt
 ```
 
-This section adds the classes to use as user and its encryption method.
-
+The encoder specify how the user class is encrypted.
 
 
 
