@@ -710,7 +710,7 @@ security:
         - { path: ^/, roles: ROLE_USER }
 ```
 
-A rule is defined by a regex path to be applied, and conditions. In this example, /public is allowed for the meta-role "IS_AUTHENTICATED_ANONYMOUSLY", anyway each routes needs the user to have a ROLE_USER role.
+A rule is defined by a regex path to be applied, and conditions. In this example, /public is allowed for the meta-role "IS_AUTHENTICATED_ANONYMOUSLY" (the role for public access), anyway each routes needs the user to have a ROLE_USER role.
 A user defined role is defined by the prefix ROLE_ and can be set hierarchically, for example :
 
 ```yaml
@@ -721,7 +721,85 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 ```
 
+### Step 303.5 - create a register form.
+Add in your main firewall `anonymous: ~`.
+Add in your User entity a private field named `plainPassword` and add getters/setters. Edit also the method eraseCredentials : 
+```php
+    public function eraseCredentials() {
+        $this->plainPassword=null;
+    }
+```
 
+Then create a form to register. 
+In `src/Form` create a class named `UserType` and extends `Symfony\Component\Form\AbstractType`
+
+```php
+class UserType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('email', EmailType::class)
+            ->add('username', TextType::class)
+            ->add('plainPassword', RepeatedType::class, array(
+                'type' => PasswordType::class,
+                'first_options'  => array('label' => 'Password'),
+                'second_options' => array('label' => 'Repeat Password'),
+            ))
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => User::class,
+        ));
+    }
+}
+```
+Don't forget to add missing classes usages.
+
+To Handle the password encryption, you have to implement well this method.
+```php
+use App\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+/**
+* ............................
+*/
+    public function registerAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        // 1) build the form
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+
+        // 2) handle the submit (will only happen on POST)
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // 3) Encode the password (you could also do this via Doctrine listener)
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+
+            // 4) save the User!
+            throw new \Exception("your job stats is.");
+
+            // ... do any other work - like sending them an email, etc
+            // maybe set a "flash" success message for the user
+
+            return $this->redirectToRoute('redirect_to_another_rule');
+        }
+
+        return $this->render(
+            'registration/register.html.twig',
+            array('form' => $form->createView())
+        );
+    }
+```
+add the required view with its form.
+Now, remove the http_basic from the configuration and add [a plain old login form](https://symfony.com/doc/current/security/form_login_setup.html).
 
 
 
