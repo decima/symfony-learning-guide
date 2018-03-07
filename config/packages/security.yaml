@@ -4,7 +4,7 @@ security:
         App\Entity\User:
             algorithm: bcrypt
     providers:
-        our_db_provider:
+        my_db_provider:
             entity:
                 class: App\Entity\User
     firewalls:
@@ -12,7 +12,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
+            pattern:    ^/
+            http_basic: ~
+            provider: my_db_provider
 
             # activate different ways to authenticate
 

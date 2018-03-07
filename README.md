@@ -687,6 +687,40 @@ security:
                 class: App\Entity\User
 ```
 
+#### Step 303 - Firewall and Access Control
+Now in your security.yaml file, add a new firewall rule called main.
+```yaml
+security:
+  # ...
+    firewalls:
+        main:
+            pattern:    ^/   # regex of the path the firewall applies to - here everything
+            http_basic: ~    # use http basic for login
+            provider: my_db_provider # it specifies what provider to use.
+```
+
+Try to access to your site. As you can see, you cannot access to it anymore without login and password. Login is now connected to your entity.
+
+We will add some access_control rules.
+this is how it works : 
+```yaml
+security:
+    access_control:
+        - { path: ^/public, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }
+```
+
+A rule is defined by a regex path to be applied, and conditions. In this example, /public is allowed for the meta-role "IS_AUTHENTICATED_ANONYMOUSLY", anyway each routes needs the user to have a ROLE_USER role.
+A user defined role is defined by the prefix ROLE_ and can be set hierarchically, for example :
+
+```yaml
+security:
+    # ...
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+```
+
 
 
 
